@@ -1,0 +1,38 @@
+TEST1: üres bemenet
+	A
+		Get-ProjectsForGroups.ps1 -Department "Department of Networks" –OutFile ""
+	B
+		Get-ProjectsForGroups.ps1 -Department "" –OutFile "OutPutTest1.csv"	
+
+	#el fog szállni InvalidData-val, nem kezeltem le, utolsóként jutottam el ehhez a problémához és arra jutottam, hogy nem is kell lekezelni (ilyen elvi dolog, többi parancs se csinálja)
+
+TEST2: nem létezõ departmenttel bemenet
+	Get-ProjectsForGroups.ps1 -Department "Department of Nemletezo" –OutFile "OutPutTest2.csv"
+
+	#Hibakezelésre figyelni kellett elvárások miatt gondoltam kezdek vele valamit de így utólag lehet szükségtelen az az if ág
+
+TEST3: nem ""-os formában megadás mint a példában
+	A
+		Get-ProjectsForGroups.ps1 -Department Department of Networks –OutFile "OutPutTest3a.csv"
+	B	
+		Get-ProjectsForGroups.ps1 -Department "Department of Networks" –OutFile OutPutTest3b.csv
+
+	#InvalidArgument hibát dob, szerintem ezt se kell lekezelni
+
+TEST4: hibás file formátum
+	A
+		Get-ProjectsForGroups.ps1 -Department "Department of Networks" –OutFile "OutPutTest4./%?xx4.cs"		
+
+	#létre fog hozni egy mappát a force miatt ha .csv a végzõdés, de érvénytelen karaktereket tartalmaz, az pedig mindenképp kelleni fog mert specifikáció szerint felül kell íródnia
+
+TEST5: jó bemenet1 -Descending
+	Get-ProjectsForGroups.ps1 -Department "Department of Mechanics" –OutFile "OutPutTest5.csv" -Descending
+
+TEST6: jó bemenet1
+	Get-ProjectsForGroups.ps1 -Department "Department of Mechanics" –OutFile "OutPutTest6.csv"
+	
+TEST7: jó bemenet2
+	Get-ProjectsForGroups.ps1 -Department "Department of Embedded Systems" –OutFile "OutPutTest7.csv"
+
+TEST8: jó bemenet3 felcserélt paraméterezés 
+	Get-ProjectsForGroups.ps1 -Descending –OutFile "OutPutTest8.csv" -Department "Department of Networks"
